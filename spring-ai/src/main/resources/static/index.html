@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Audio Transcription | CodeWithManjya</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f3f4f6;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 60px auto;
+            background: white;
+            padding: 28px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.04);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #111827;
+        }
+
+        .sub {
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .upload-box {
+            border: 1px dashed #9ca3af;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+
+        input[type="file"] {
+            margin-top: 10px;
+        }
+
+        button {
+            margin-top: 18px;
+            padding: 10px 20px;
+            border: none;
+            background: #2563eb;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .label {
+            margin-top: 20px;
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            resize: vertical;
+            font-size: 14px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 20px;
+        }
+
+        .badge {
+            font-size: 11px;
+            padding: 4px 8px;
+            background: #eef2ff;
+            border-radius: 4px;
+            color: #4f46e5;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    
+    <h1>Audio Transcription</h1>
+    <div class="sub">Upload an audio file and convert it to text.</div>
+
+    <div class="upload-box">
+        <div class="label">Select Audio File:</div>
+        <input type="file" id="audioFile" accept="audio/*">
+        <br>
+        <button onclick="uploadAndTranscribe()">Transcribe</button>
+    </div>
+
+    <div class="label">Result:</div>
+    <textarea id="result" placeholder="Your transcribed text will appear here..." readonly></textarea>
+
+    <div class="footer">
+        Built by <span class="badge">CodeWithManjya</span>
+    </div>
+</div>
+
+<script>
+    const BASE_URL = '/api/v1/audio';
+
+    async function uploadAndTranscribe() {
+        const fileInput = document.getElementById("audioFile");
+        const resultArea = document.getElementById("result");
+
+        if (!fileInput.files.length) {
+            alert("Please select an audio file first.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("audioFile", fileInput.files[0]); 
+
+        resultArea.value = "Processing... Please wait.";
+
+        try {
+            const response = await fetch(`${BASE_URL}/text`, {
+                method: "POST",
+                body: formData
+            });
+
+            const text = await response.text();
+
+            if (!response.ok) {
+                resultArea.value = "Error: " + text;
+            } else {
+                resultArea.value = text;
+            }
+        } catch (err) {
+            resultArea.value = "Error: " + err.message;
+        }
+    }
+</script>
+
+</body>
+</html>

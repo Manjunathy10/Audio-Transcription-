@@ -29,12 +29,22 @@ public class AudioController {
 		return ResponseEntity.ok(responseText);
 	}
 
-	// this method for add a audio file with user not hard coaded
 	@PostMapping("/text")
 	public ResponseEntity<String> speechToText(@RequestParam("audioFile") MultipartFile audioFile) {
-		String responseText = audioService.convertAudioToText(audioFile.getResource());
-		return ResponseEntity.ok(responseText);
+	    try {
+	        String responseText = audioService.convertAudioToText(audioFile.getResource());
+	        return ResponseEntity.ok(responseText);
+	    } catch (org.springframework.ai.retry.NonTransientAiException e) {
+	        // OpenAI quota / 429 wala case
+	        return ResponseEntity.status(429)
+	                .body("OpenAI quota exceeded / insufficient credits. Please check your OpenAI billing or use another API key.");
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return ResponseEntity.internalServerError()
+	                .body("Server error while transcribing audio: " + e.getMessage());
+	    }
 	}
+
 
 	@PostMapping("/transript-with-opetion")
 	public ResponseEntity<String> transriptAudioWithOpetion(@Value("${classpath:sample2.mp3}") Resource resource) {
