@@ -1,29 +1,32 @@
 # 🎧 Audio Transcription Backend (Spring Boot)
 
-This project is a Spring Boot based backend service for **audio-to-text transcription**.  
-It accepts audio files, processes them, and returns the transcription output.
+This project is a Spring Boot–based backend service for **audio-to-text transcription**.  
+It accepts audio files, processes them, and returns the transcribed text output.
 
 ---
 
 ## 🚀 Features
 
 - Upload MP3/WAV audio files  
-- Process audio using service layer  
-- REST API endpoints  
-- Ready for integration with external AI services  
-- Easy to extend and customize  
+- Audio-to-text processing  
+- REST API endpoints for audio handling  
+- Easy to integrate with AI/ML transcription engines  
+- Modular service-layer architecture  
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Java 17+**
+- **Java 25**
 - **Spring Boot**
 - **Maven**
 - **Spring Web**
-- **Spring AI / OpenAI integration** (if used)
+- (Optional) **Spring AI / OpenAI Integration**
 
 ---
 
-## 📂 Project Structure
+## ▶️ How to Run the Project
 
+### 1️⃣ Clone the repository
+```bash
+git clone https://github.com/Manjunathy10/Audio-Transcription-.git
